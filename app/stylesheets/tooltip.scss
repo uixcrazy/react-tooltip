@@ -1,0 +1,63 @@
+@import "mixins";
+$prefix: "tooltip";
+// $tooltip-max-width: 120px;
+$zindex-tooltip: 1000;
+$tooltip-max-width: 320px; //120
+$tooltip-color: #333;
+$tooltip-bg: #f7f7f7;
+$tooltip-border-color: #ccc;
+$tooltip-arrow-color: #0ff;
+$tooltip-opacity: 0.9; // 1
+$tooltip-arrow-width: 4px; // 5
+$tooltip-fontsize: 15px; // 9
+
+.#{$prefix}-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.#{$prefix} {
+  max-width: $tooltip-max-width;
+  background-color: $tooltip-bg;
+  font-size: $tooltip-fontsize;
+  z-index: $zindex-tooltip;
+  display: inline-block;
+  border-radius: 3px;
+  text-align: center;
+  left: -999em;
+  opacity: 0;
+  padding: 3px 8px;
+  position: fixed;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+  top: -999em;
+  visibility: hidden;
+  // &:before,
+  // &:after {
+  //   content: "";
+  .#{$prefix}-arrow-outside,
+  .#{$prefix}-arrow-inside {
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  &.show {
+    opacity: $tooltip-opacity;
+    margin-top: 0px;
+    margin-left: 0px;
+    visibility: visible;
+  }
+  // Placement
+  &.top {
+    @include mixin-placement(top, bottom, left, right, top, left);
+  }
+  &.bottom {
+    @include mixin-placement(bottom, top, left, right, top, left);
+  }
+  &.left {
+    @include mixin-placement(left, right, top, bottom, left, top);
+  }
+  &.right {
+    @include mixin-placement(right, left, top, bottom, left, top);
+  }
+}

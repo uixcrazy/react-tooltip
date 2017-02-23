@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb/base",
+  "plugins": ["react"],
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": ["error", 2],
+    "max-len": [2, 120, 2]
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "no-use-before-define": ["error",  "nofunc"]
+}

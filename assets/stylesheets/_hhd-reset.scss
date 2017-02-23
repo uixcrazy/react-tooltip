@@ -1,0 +1,33 @@
+html, body,
+// Sections
+article, section, nav, aside, header, footer, address,
+// Heading
+h1, h2, h3, h4, h5, h6,
+// Grouping
+div, p, pre, blockquote, ul, li, dl, dt, dd, ol, figure, figcaption, hr, details, summary,
+// Text
+a, em, strong, b, span, sub, sup, abbr, small, mark, code, q, s, samp, br, ruby,
+// Tables
+table, tbody, tfoot, thead, tr, th, td, caption,
+// Forms
+form, input, button, label, fieldset, legend, output,
+// Embedded Content
+embed, iframe, img, audio, video, object, area, source,
+// Scripting
+canvas, script, noscript
+{
+  letter-spacing: .02rem;
+  //letter-spacing: .1rem;
+  //line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  // font-size: 100%;
+  // font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
