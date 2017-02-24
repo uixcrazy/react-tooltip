@@ -51,6 +51,7 @@ function WrapperTooltip(WrappedComponent) {
         'hideTooltip',
         'onWindowResize',
         'updatePosition',
+        'rebind',
       ]);
 
       this.mount = true;
@@ -61,6 +62,12 @@ function WrapperTooltip(WrappedComponent) {
       methodArray.forEach((method) => {
         this[method] = this[method].bind(this);
       });
+    }
+
+    rebind() {
+      this.tooltipEl.classList.remove('show');
+      this.bindListener();
+      this.bindWindowEvents(this.tooltipProps.resizeHide);
     }
 
     componentDidMount() {
@@ -231,7 +238,7 @@ function WrapperTooltip(WrappedComponent) {
       delete newProps.tooltip;
       return (
         <div className={`${baseClassName}-wrapper`} ref={ DOM => this.DOM = DOM }>
-          <WrappedComponent {...newProps} />
+          <WrappedComponent {...newProps} rebind={ this.rebind } />
           <div className={baseClassName} ref={ DOM => this.tooltipEl = DOM }>
             <span className={`${baseClassName}-arrow-outside`} ref={ DOM => this.tooltipArrowOutside = DOM }/>
             <div
