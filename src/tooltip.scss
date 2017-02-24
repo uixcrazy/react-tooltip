@@ -1,6 +1,4 @@
-@import "mixins";
 $prefix: "tooltip";
-// $tooltip-max-width: 120px;
 $zindex-tooltip: 1000;
 $tooltip-max-width: 320px; //120
 $tooltip-color: #333;
@@ -8,8 +6,30 @@ $tooltip-bg: #f7f7f7;
 $tooltip-border-color: #ccc;
 $tooltip-arrow-color: #0ff;
 $tooltip-opacity: 0.9; // 1
-$tooltip-arrow-width: 4px; // 5
+$tooltip-arrow-width: 4px;
 $tooltip-fontsize: 15px; // 9
+
+@mixin mixin-placement($p1, $p2, $p3, $p4, $p5, $p6 ) { // top, bottom, left, right, left
+  border: 1px solid $tooltip-border-color;
+  .#{$prefix}-arrow-outside { // &:before {
+    #{$p2}: -($tooltip-arrow-width + 2);
+    #{$p6}: 50%;
+    margin-#{$p6}: -($tooltip-arrow-width + 4);
+    border-#{$p3}: ($tooltip-arrow-width + 4) solid transparent;
+    border-#{$p4}: ($tooltip-arrow-width + 4) solid transparent;
+    border-#{$p1}: ($tooltip-arrow-width + 2) solid $tooltip-border-color; // has border
+  }
+  .#{$prefix}-arrow-inside { // &:after {
+    border-#{$p1}-style: solid;
+    border-#{$p1}-color: $tooltip-arrow-color;
+    #{$p2}: -$tooltip-arrow-width;
+    #{$p6}: 50%;
+    margin-#{$p6}: -($tooltip-arrow-width + 2);
+    border-#{$p3}: ($tooltip-arrow-width + 2) solid transparent;
+    border-#{$p4}: ($tooltip-arrow-width + 2) solid transparent;
+    border-#{$p1}-width: $tooltip-arrow-width;
+  }
+}
 
 .#{$prefix}-wrapper {
   position: relative;
@@ -32,9 +52,6 @@ $tooltip-fontsize: 15px; // 9
   transition: opacity 0.3s ease-out;
   top: -999em;
   visibility: hidden;
-  // &:before,
-  // &:after {
-  //   content: "";
   .#{$prefix}-arrow-outside,
   .#{$prefix}-arrow-inside {
     width: 0;

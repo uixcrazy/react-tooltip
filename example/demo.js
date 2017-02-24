@@ -2,7 +2,7 @@
  * https://tylermcginnis.com/functional-components-vs-stateless-functional-components-vs-stateless-components/
  */
 import React, { Component, PropTypes } from 'react';
-import makeWrapperTooltip from '../app/components/WrapperTooltip';
+import makeWrapperTooltip from '../src/WrapperTooltip';
 import './demo.scss';
 
 const HelloWorld = ({ name }) => (

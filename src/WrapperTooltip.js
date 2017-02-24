@@ -6,8 +6,8 @@
  */
 
 import React, { Component } from 'react'; // eslint-disable-line
-import getPosition from './getPosition';
-import '../stylesheets/tooltip.scss';
+import getPosition from './GetPosition';
+import './tooltip.scss';
 
 const tooltipDefaultProps = { // insteed Tooltip.defaultProps
   baseClassName: 'tooltip',
@@ -86,13 +86,8 @@ function WrapperTooltip(WrappedComponent) {
     bindListener() {
       const { isFollowMouse } = this.tooltipProps;
       const targetArray = this.getTargetArray();
-
       targetArray.forEach((target) => {
-        if (target.getAttribute('currentItem') === null) {
-          target.setAttribute('currentItem', 'false');
-        }
         this.unbindBasicListener(target);
-
         target.addEventListener('mouseenter', this.showTooltip);
         if (isFollowMouse) {
           target.addEventListener('mousemove', this.updateTooltip);

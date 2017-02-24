@@ -29,12 +29,8 @@ const server = new WebpackDevServer(webpack(config), {
   },
 });
 
-router.get('/demo', (req, res) => {
-  res.send('Hello Router Express!');
-});
-
 router.get('/:demo_page', (req, res) => {
-  res.sendFile(path.resolve(__dirname, `../example/index.html`), 'utf-8');
+  res.sendFile(path.resolve(__dirname, '../example/index.html'), 'utf-8');
 });
 
 server.use(router);
