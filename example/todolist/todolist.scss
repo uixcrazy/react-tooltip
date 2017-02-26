@@ -1,0 +1,56 @@
+.list-group {
+  margin-top: 20px;
+  .item {
+    padding: 10px 5px;
+    margin-top: 2px;
+  }
+}
+
+.done {
+  background-color: Honeydew;
+  .text {
+    color: red;
+    text-decoration: line-through;
+    font-family: Impact,Charcoal;
+  }
+}
+.undone {
+  background-color: Azure;
+  .text {
+    color: #61DAFB;
+    font-family: Impact,Charcoal;
+  }
+}
+.mark-done {
+  margin-right: 30px;
+}
+.mark-done:hover {
+  color: #DD0000;
+}
+.close {
+  margin-left: 15px;
+  float: right;
+}
+.close:hover {
+  color: #DD0000;
+}
+
+form {
+  padding-top: 15px;
+  input {
+    height: 28px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+  }
+  .add-button {
+    height: 28px;
+    line-height: 28px;
+    margin-left: 2px;
+    padding: 0 5px;
+  }
+}

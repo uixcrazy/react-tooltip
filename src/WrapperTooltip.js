@@ -233,6 +233,7 @@ function WrapperTooltip(WrappedComponent) {
     }
 
     render() {
+      console.log('render');
       const baseClassName = this.tooltipProps.baseClassName;
       const newProps = Object.assign({}, this.props);
       delete newProps.tooltip;
