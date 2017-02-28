@@ -17,7 +17,7 @@ class Item extends Component {
   render() {
     const itemClass = this.props.item.done ? 'done' : 'undone';
     return (
-      <div className= {`item ${itemClass}`} rel="tooltip">
+      <div className= {`item ${itemClass}`} rel="tooltip" data-tip={this.props.item.text}>
         <span className='mark-done' onClick={this.onClickDone}>{'\u2714'}</span>
         <span className="text">{this.props.item.text}</span>
         <span className='close' onClick={this.onClickClose}>{'\u2718'}</span>
@@ -37,6 +37,15 @@ class List extends Component {
     });
   }
 
+  componentDidUpdate() {
+    const { rebind } = this.props;
+    if (this.state.update && rebind) {
+      this.setState({
+        update: false,
+      }, rebind());
+    }
+  }
+
   handleChange(e) {
     this.setState({
       inputValue: e.target.value,
@@ -52,6 +61,7 @@ class List extends Component {
     this.setState({
       initItems: newItem,
       inputValue: '',
+      update: true,
     });
   }
 

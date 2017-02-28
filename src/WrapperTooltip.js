@@ -52,6 +52,8 @@ function WrapperTooltip(WrappedComponent) {
         'onWindowResize',
         'updatePosition',
         'rebind',
+        // 'bindListener',
+        // 'unbindListener',
       ]);
 
       this.mount = true;
@@ -65,7 +67,9 @@ function WrapperTooltip(WrappedComponent) {
     }
 
     rebind() {
-      this.tooltipEl.classList.remove('show');
+      this.unbindListener();
+      this.unbindWindowEvents();
+
       this.bindListener();
       this.bindWindowEvents(this.tooltipProps.resizeHide);
     }
@@ -151,7 +155,6 @@ function WrapperTooltip(WrappedComponent) {
         offset: dataOffset,
         resizeHide,
         isFollowMouse,
-
         isEmptyTip: !dataTip,
       });
       this.updateTooltip(e);
@@ -167,7 +170,11 @@ function WrapperTooltip(WrappedComponent) {
       if (isEmptyTip || disable || (show && !isFollowMouse)) return;
       this.tooltipEl.classList.add('show');
 
-      this.tooltipEl.classList.remove('top', 'bottom', 'right', 'left');
+      // this.tooltipEl.classList.remove('top', 'bottom', 'right', 'left');
+      if (this.tooltipEl.classList.contains('top')) this.tooltipEl.classList.remove('top');
+      if (this.tooltipEl.classList.contains('bottom')) this.tooltipEl.classList.remove('bottom');
+      if (this.tooltipEl.classList.contains('right')) this.tooltipEl.classList.remove('right');
+      if (this.tooltipEl.classList.contains('left')) this.tooltipEl.classList.remove('left');
       this.tooltipEl.classList.add(this.state.place);
 
       this.setState({
@@ -217,7 +224,11 @@ function WrapperTooltip(WrappedComponent) {
       }
 
       if (result.place && result.place !== place) {
-        this.tooltipEl.classList.remove('top', 'bottom', 'right', 'left');
+        // this.tooltipEl.classList.remove('top', 'bottom', 'right', 'left');
+        if (this.tooltipEl.classList.contains('top')) this.tooltipEl.classList.remove('top');
+        if (this.tooltipEl.classList.contains('bottom')) this.tooltipEl.classList.remove('bottom');
+        if (this.tooltipEl.classList.contains('right')) this.tooltipEl.classList.remove('right');
+        if (this.tooltipEl.classList.contains('left')) this.tooltipEl.classList.remove('left');
         this.tooltipEl.classList.add(result.place);
       }
 
@@ -233,7 +244,6 @@ function WrapperTooltip(WrappedComponent) {
     }
 
     render() {
-      console.log('render');
       const baseClassName = this.tooltipProps.baseClassName;
       const newProps = Object.assign({}, this.props);
       delete newProps.tooltip;
