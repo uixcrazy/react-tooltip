@@ -5,8 +5,6 @@
  * data-tip="content tooltip"
  * data-place="top"
  * data-offset="10"
- * data-resize-window
- * data-static
 */
 
 /*
@@ -22,67 +20,138 @@
  * ----- onmousemove
  */
 
-import getPosition from '../GetPosition';
+import getPosition from './GetPosition';
+import '../tooltip.scss';
 
 class Tooltip {
   constructor(className) {
     console.log(className);
-    const container = document.querySelector(`.${className}`);
-    this.container = container;
-    console.log(container);
-    if (container) {
-      container.addEventListener('mouseover', (event) => {
-        const elm = event.target;
-        if (elm.getAttribute('rel') === 'tooltip') {
-          this.showTooltip(event, elm);
+    this.document = document;
+    this.container = this.document.querySelector(`.${className}`);
+    this.baseClassName = 'tooltip';
+
+    console.log(this.container);
+
+    if (!!('ontouchstart' in window)) {
+      return;
+    }
+    if (this.container) {
+      this.container.addEventListener('mouseover', (event) => {
+        const target = event.target;
+        if (target.getAttribute('rel') === 'tooltip') {
+          this.showTooltip(event, target);
         }
       }, false);
+      this.container.addEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
+      this.container.addEventListener('mouseout', (event) => { this.hideTooltip(event); }, false);
     }
     this.state = {
       dataTip: null,
       place: 'top',
       offset: 0,
-      resizeHide: true,
-      isFollowMouse: true,
-      show: false,
+      // tooltipEl: null,
+      // tooltipContent: null,
+      // tooltipArrowOutside: null,
+      // tooltipArrowInside: null,
     };
+    this.createTooltip();
   }
 
-  showTooltip(event, elm) {
-    const dataTip = elm.getAttribute('data-tip');
-    const place = elm.getAttribute('data-place') || 'top';
-    const offset = Number(elm.getAttribute('data-offset')) || 0;
-    const resizeHide = elm.hasAttribute('data-resize-window'); // → true/false
-    const isFollowMouse = elm.hasAttribute('data-static'); // → true/false
+  showTooltip(event, target) {
+    if (target) {
+      const dataTip = target.getAttribute('data-tip');
+      const place = target.getAttribute('data-place') || 'top';
+      const offset = Number(target.getAttribute('data-offset')) || 0;
 
-    console.log(dataTip, place, offset, resizeHide, isFollowMouse);
-    if (dataTip) {
-      Object.assign({}, this.state, { dataTip, place, offset, resizeHide, isFollowMouse });
+      // console.log(dataTip, place, offset);
+      if (dataTip) {
+        const { tooltipEl } = this.state;
+        Object.assign(this.state, { dataTip, place, offset });
+        tooltipEl.classList.add('show');
+        this.updateTooltip(event);
+      }
     }
-    this.updateTooltip(event, elm);
   }
 
-  updateTooltip(event, elm) {
-    console.log(this.state);
-    const { place, offset, isFollowMouse } = this.state;
+  hideTooltip(event) {
+    const { tooltipEl } = this.state;
+    tooltipEl.classList.remove('show');
 
+    // this.container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
+    // this.container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
+    // this.container.removeEventListener('mouseleave', (event) => { this.hideTooltip(event); }, false);
+  }
 
-    if (elm.classList.contains('top')) elm.classList.remove('top');
-    if (elm.classList.contains('bottom')) elm.classList.remove('bottom');
-    if (elm.classList.contains('right')) elm.classList.remove('right');
-    if (elm.classList.contains('left')) elm.classList.remove('left');
-    elm.classList.add(this.state.place);
+  updateTooltip(event) {
+    // console.log(this.state);
+    const {
+      dataTip,
+      place,
+      offset,
+      tooltipEl,
+      tooltipContent,
+      tooltipArrowOutside,
+      tooltipArrowInside,
+    } = this.state;
 
-    // (event, target, container, tooltipEl, place, isFollowMouse, offset)
-    const result = getPosition(event, elm, this.container, elm, place, isFollowMouse, offset);
-    console.log(result);
+    const position = getPosition(event, this.container, tooltipEl, place, offset);
 
+    if (position.hide) {
+      this.hideTooltip(event);
+      return;
+    }
+
+    tooltipContent.innerHTML = dataTip;
+    if (position.place) {
+      if (tooltipEl.classList.contains('top')) tooltipEl.classList.remove('top');
+      if (tooltipEl.classList.contains('bottom')) tooltipEl.classList.remove('bottom');
+      if (tooltipEl.classList.contains('right')) tooltipEl.classList.remove('right');
+      if (tooltipEl.classList.contains('left')) tooltipEl.classList.remove('left');
+      tooltipEl.classList.add(position.place);
+    }
+
+    // Set tooltip position ~~ Math.floor(Double)
+    tooltipEl.style.left = `${~~position.position.left}px`;
+    tooltipEl.style.top = `${~~position.position.top}px`;
+    if (position.positionArrow) {
+      tooltipArrowOutside.style.left = `${position.positionArrow.left}px`;
+      tooltipArrowInside.style.left = `${position.positionArrow.left}px`;
+      tooltipArrowOutside.style.top = `${position.positionArrow.top}px`;
+      tooltipArrowInside.style.top = `${position.positionArrow.top}px`;
+    }
+    console.log(position);
+  }
+
+  createTooltip() {
+    let { tooltipEl } = this.state;
+    const haveTooltipEl = this.container.querySelector(`.${this.baseClassName}`);
+    if (!tooltipEl && !haveTooltipEl) {
+      tooltipEl = this.document.createElement('div');
+      tooltipEl.setAttribute('class', `${this.baseClassName}`);
+      const tooltipArrowOutside = this.document.createElement('span');
+      tooltipArrowOutside.setAttribute('class', `${this.baseClassName}-arrow-outside`);
+      const tooltipArrowInside = this.document.createElement('span');
+      tooltipArrowInside.setAttribute('class', `${this.baseClassName}-arrow-inside`);
+      const tooltipContent = this.document.createElement('span');
+      tooltipContent.setAttribute('class', `${this.baseClassName}-content`);
+      tooltipEl.appendChild(tooltipArrowOutside);
+      tooltipEl.appendChild(tooltipArrowInside);
+      tooltipEl.appendChild(tooltipContent);
+      this.container.appendChild(tooltipEl);
+      Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
+    } else {
+      tooltipEl = haveTooltipEl;
+      const tooltipArrowOutside = tooltipEl.querySelector(`.${this.baseClassName}-arrow-outside`);
+      const tooltipArrowInside = tooltipEl.querySelector(`.${this.baseClassName}-arrow-inside`);
+      const tooltipContent = tooltipEl.querySelector(`.${this.baseClassName}-content`);
+      Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
+    }
   }
 }
 
 export default Tooltip;
 
 
-        // target.addEventListener('mouseenter', this.showTooltip);
-        //   target.addEventListener('mousemove', this.updateTooltip);
-        // target.addEventListener('mouseleave', this.hideTooltip);
+// target.addEventListener('mouseenter', this.showTooltip);
+//   target.addEventListener('mousemove', this.updateTooltip);
+// target.addEventListener('mouseleave', this.hideTooltip);

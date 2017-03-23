@@ -47,7 +47,8 @@ $tooltip-fontsize: 15px; // 9
   left: -999em;
   opacity: 0;
   padding: 3px 8px;
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   pointer-events: none;
   transition: opacity 0.3s ease-out;
   top: -999em;

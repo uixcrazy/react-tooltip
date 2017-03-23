@@ -4,7 +4,7 @@ import { render } from 'react-dom'; // eslint-disable-line
 // import DemoA from './demo01'; // eslint-disable-line
 import List from './todolist/index';
 // import makeWrapperTooltip from '../src/WrapperTooltip';
-import ttt from '../src/jspure/tooltip';
+import ttt from '../src/jspure/Tooltip';
 
 const todoItems = [
   { text: 'learn react', done: false },
