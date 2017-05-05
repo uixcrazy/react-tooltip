@@ -1,8 +1,20 @@
 @import "~normalize";
 @import "../../assets/stylesheets/hhd-reset";
+#app {
+  margin-top: 800px;
+  background-color: #eee;
+}
+
 .list-group {
   position: relative;
-  margin-top: 20px;
+
+  background: red;
+  margin-top: 30px;
+  margin-left: 50px;
+
+  padding-top: 20px;
+  padding-left: 50px;
+  border: 20px solid #000;
   .item {
     padding: 10px 5px;
     margin-top: 2px;

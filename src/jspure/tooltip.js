@@ -25,12 +25,12 @@ import '../tooltip.scss';
 
 class Tooltip {
   constructor(className) {
-    console.log(className);
+    // console.log(className);
     this.document = document;
     this.container = this.document.querySelector(`.${className}`);
     this.baseClassName = 'tooltip';
 
-    console.log(this.container);
+    // console.log(this.container);
 
     if (!!('ontouchstart' in window)) {
       return;
@@ -119,7 +119,7 @@ class Tooltip {
       tooltipArrowOutside.style.top = `${position.positionArrow.top}px`;
       tooltipArrowInside.style.top = `${position.positionArrow.top}px`;
     }
-    console.log(position);
+    // console.log(position);
   }
 
   createTooltip() {
