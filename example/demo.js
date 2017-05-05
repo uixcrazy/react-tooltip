@@ -2,7 +2,9 @@
  * https://tylermcginnis.com/functional-components-vs-stateless-functional-components-vs-stateless-components/
  */
 import React, { Component, PropTypes } from 'react';
-import makeWrapperTooltip from '../src/WrapperTooltip';
+import { render } from 'react-dom'; // eslint-disable-line
+// import makeWrapperTooltip from '../src/WrapperTooltip';
+import ttt from '../src/jspure/Tooltip';
 import './demo.scss';
 
 const HelloWorld = ({ name }) => (
@@ -23,19 +25,17 @@ const HelloWorld = ({ name }) => (
  </div>
 );
 
-const Example = (props) => {
-  // console.log(props);
-  return (
-    <div className="example">
-      { props.children }
-      {`Hi ${props.name}`}
-    </div>
-  );
-};
+const Example = props =>
+  (<div className="example">
+    { props.children }
+    {`Hi ${props.name}`}
+  </div>);
 
-export default props => {
-  const StaticUI = makeWrapperTooltip(Example);
-  const DynamicUI = makeWrapperTooltip(HelloWorld);
+const Demo = props => {
+  // const StaticUI = makeWrapperTooltip(Example);
+  // const DynamicUI = makeWrapperTooltip(HelloWorld);
+  const StaticUI = Example;
+  const DynamicUI = HelloWorld;
   const dataTooltipDefault = `<p>second content</p>
     <h1>My Heading</h1>
     <p>This is the first paragraph of text.</p>
@@ -75,10 +75,6 @@ export default props => {
           name="you! I follow by your mouse..."/>
       </div>
 
-
-
-
-
       <h1>Static Demo</h1>
       <div className="box-grp demo-static">
         <StaticUI {...props}
@@ -108,10 +104,6 @@ export default props => {
           <span rel="tooltip" data-place="top">TOP</span>
         </StaticUI>
       </div>
-
-
-
-
 
       <h1>Follow MOuse - right default</h1>
       <div className="box-grp demo-dynamic">
@@ -144,7 +136,10 @@ export default props => {
           }}
           name="you! I follow by your mouse..."/>
       </div>
-
     </div>
   );
 };
+
+render(
+  <Demo />
+  , document.getElementById('app'));

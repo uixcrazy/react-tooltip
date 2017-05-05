@@ -16,7 +16,6 @@
  */
 
 export default function (event, container, tooltipEl, place, offset) {
-
   const widthTooltipEl = tooltipEl.offsetWidth;
   const heightTooltipEl = tooltipEl.offsetHeight;
   const actualOffset = 10 + offset;

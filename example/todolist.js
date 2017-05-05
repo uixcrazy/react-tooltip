@@ -1,14 +1,15 @@
 
 import React from 'react';  // eslint-disable-line
 import { render } from 'react-dom'; // eslint-disable-line
-// import DemoA from './demo01'; // eslint-disable-line
-import List from './todolist/index';
-// import makeWrapperTooltip from '../src/WrapperTooltip';
+import List from './todolist/index'; // eslint-disable-line
 import ttt from '../src/jspure/Tooltip';
 
 const todoItems = [
+  { text: 'redux', done: false },
+  { text: 'unit test', done: false },
+  { text: 'CSS in JS', done: false },
   { text: 'learn react', done: false },
-  { text: 'Go shopping', done: true },
+  { text: 'go shopping', done: true },
   { text: 'buy flowers', done: true },
 ];
 // const FinalList = makeWrapperTooltip(List);

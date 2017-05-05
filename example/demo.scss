@@ -25,11 +25,11 @@ h1 {
   > div {
     display: inline-block;
     width: 50%;
-    order: 0;
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: auto;
-    align-self: auto;
+    // order: 0;
+    // flex-grow: 0;
+    // flex-shrink: 1;
+    // flex-basis: auto;
+    // align-self: auto;
     position: relative;
     border: 1px solid #0294a5;
     // padding: 50px;
@@ -40,7 +40,9 @@ h1 {
 }
 
 .demo-static .example {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 150px;
   > span {
     position: absolute;
