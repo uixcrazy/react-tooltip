@@ -1,5 +1,5 @@
 /**
- * docs: webpack 2.2.1
+ * docs: webpack 2.3.0
  * https://webpack.js.org/guides/migrating/
  * https://webpack.js.org/configuration/
 */
@@ -77,9 +77,7 @@ export default {
     // extensions that are used
 
     alias: {
-      "animate": path.resolve(__dirname, '../../node_modules/animate.css/source'),
       "normalize": path.resolve(__dirname, "../node_modules/normalize.css"),
-      "isotip": path.resolve(__dirname, "../assets/javascripts/isotip.js"),
     },
   },
 

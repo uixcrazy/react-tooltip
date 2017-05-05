@@ -29,6 +29,7 @@ const server = new WebpackDevServer(webpack(config), {
   },
 });
 
+// router.get('/:demo_page', (req, res) => {
 router.get('/:demo_page', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../example/index.html'), 'utf-8');
 });
