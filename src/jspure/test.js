@@ -25,3 +25,6 @@ const marginLeft = parseInt(getComputedStyle(container, '').getPropertyValue('ma
 const borderLeftWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-left-width'), 10);
 const marginTop = parseInt(getComputedStyle(container, '').getPropertyValue('margin-top'), 10);
 const borderTopWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-top-width'), 10);
+
+const containerList = this.document.querySelectorAll(`.${className}`);
+

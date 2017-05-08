@@ -18,11 +18,23 @@
 export default function (event, container, tooltipEl, place, offset) {
   const widthTooltipEl = tooltipEl.offsetWidth;
   const heightTooltipEl = tooltipEl.offsetHeight;
+
   const actualOffset = 10 + offset;
   const actualOffsetReverse = 30 + offset;
 
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
+  // const marginLeft = parseInt(getComputedStyle(container, '').getPropertyValue('margin-left'), 10);
+  // const marginTop = parseInt(getComputedStyle(container, '').getPropertyValue('margin-top'), 10);
+  const borderLeftWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-left-width'), 10);
+  const borderTopWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-top-width'), 10);
+
+  // const mouseX = event.clientX;
+  // const mouseY = event.clientY;
+  const mouseX = event.pageX
+    - container.offsetLeft
+    - borderLeftWidth;
+  const mouseY = event.pageY
+    - container.offsetTop
+    - borderTopWidth;
 
   const boundingClientRectContainer = container.getBoundingClientRect(); // for browser's window
   const topContainerEl = boundingClientRectContainer.top;  // border + padding

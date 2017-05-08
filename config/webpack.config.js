@@ -53,7 +53,7 @@ export default (entry = null) => {
           ]
         },
         {
-          test: /\.(png|jpg|svg|gif|eot|woff|ttf)$/,
+          test: /\.(png|jpg|svg|gif|eot|woff|ttf|ico)$/,
           use: 'file-loader?name=[path][name].[ext]'
         },
 

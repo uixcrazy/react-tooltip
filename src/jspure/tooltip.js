@@ -24,14 +24,13 @@ import getPosition from './GetPosition';
 import '../tooltip.scss';
 
 class Tooltip {
-  constructor(className) {
-    // console.log(className);
-    this.document = document;
+  constructor(className, _document) {
+    this.document = _document;
+    console.log(typeof className);
+    console.log(className instanceof HTMLElement); // maybe DOM
+    // continues check
     this.container = this.document.querySelector(`.${className}`);
     this.baseClassName = 'tooltip';
-
-    // console.log(this.container);
-
     if (!!('ontouchstart' in window)) {
       return;
     }
@@ -63,7 +62,6 @@ class Tooltip {
       const place = target.getAttribute('data-place') || 'top';
       const offset = Number(target.getAttribute('data-offset')) || 0;
 
-      // console.log(dataTip, place, offset);
       if (dataTip) {
         const { tooltipEl } = this.state;
         Object.assign(this.state, { dataTip, place, offset });
@@ -83,7 +81,6 @@ class Tooltip {
   }
 
   updateTooltip(event) {
-    // console.log(this.state);
     const {
       dataTip,
       place,
@@ -151,7 +148,6 @@ class Tooltip {
 
 export default Tooltip;
 
-
 // target.addEventListener('mouseenter', this.showTooltip);
-//   target.addEventListener('mousemove', this.updateTooltip);
+// target.addEventListener('mousemove', this.updateTooltip);
 // target.addEventListener('mouseleave', this.hideTooltip);

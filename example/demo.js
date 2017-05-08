@@ -1,10 +1,10 @@
 /*
  * https://tylermcginnis.com/functional-components-vs-stateless-functional-components-vs-stateless-components/
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'; // eslint-disable-line
 import { render } from 'react-dom'; // eslint-disable-line
 // import makeWrapperTooltip from '../src/WrapperTooltip';
-import ttt from '../src/jspure/Tooltip';
+import tooltip from '../src/jspure/Tooltip';
 import './demo.scss';
 
 const HelloWorld = ({ name }) => (
@@ -31,115 +31,130 @@ const Example = props =>
     {`Hi ${props.name}`}
   </div>);
 
-const Demo = props => {
-  // const StaticUI = makeWrapperTooltip(Example);
-  // const DynamicUI = makeWrapperTooltip(HelloWorld);
-  const StaticUI = Example;
-  const DynamicUI = HelloWorld;
-  const dataTooltipDefault = `<p>second content</p>
-    <h1>My Heading</h1>
-    <p>This is the first paragraph of text.</p>
-    <p>This is the second paragraph of text.</p>
-    <p>A link: <a href="http://www.simplehtmlguide.com"> html guide </a></p>`
-  return (
-    <div>
-      <h1>Follow MOuse - bottom default</h1>
-      <div className="box-grp demo-dynamic">
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'bottom',
-          }}
-          name="you! I follow by your mouse..."/>
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'bottom',
-          }}
-          name="you! I follow by your mouse..."/>
-      </div>
+class Demo extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    const className = 'have-tooltip';
+    const containerList = document.querySelectorAll(`.${className}`);
+    console.log('did mounnt', containerList);
+    containerList.forEach(function (container) {
+      new tooltip(container, document);
+    });
+  }
 
-      <h1>Follow MOuse - top default</h1>
-      <div className="box-grp demo-dynamic">
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'top',
-          }}
-          name="you! I follow by your mouse..."/>
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'top',
-          }}
-          name="you! I follow by your mouse..."/>
-      </div>
+  render() {
+    const dataTooltipDefault = `<p>second content</p>
+      <h1>My Heading</h1>
+      <p>This is the first paragraph of text.</p>
+      <p>This is the second paragraph of text.</p>
+      <p>A link: <a href="http://www.simplehtmlguide.com"> html guide </a></p>`
+    return (
+      <div>
+        <h1>Follow MOuse - bottom default</h1>
+        <div className="have-tooltip">
+          <div className="box-grp demo-dynamic">
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'bottom',
+              }}
+              name="you! I follow by your mouse..."/>
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'bottom',
+              }}
+              name="you! I follow by your mouse..."/>
+          </div>
+        </div>
 
-      <h1>Static Demo</h1>
-      <div className="box-grp demo-static">
-        <StaticUI {...props}
-          key="static01"
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            isFollowMouse: false,
-          }}
-          name="you! I am static Box"
-        >
-          <span rel="tooltip" data-place="bottom">BOTTOM</span>
-          <span rel="tooltip" data-place="right">RIGHT</span>
-          <span rel="tooltip" data-place="left">LEFT</span>
-          <span rel="tooltip">TOP</span>
-        </StaticUI>
-        <StaticUI {...props}
-          key="static02"
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            isFollowMouse: false,
-          }}
-          name="you! I am static Box"
-        >
-          <span rel="tooltip" data-place="bottom">BOTTOM</span>
-          <span rel="tooltip" data-place="right">RIGHT</span>
-          <span rel="tooltip" data-place="left">LEFT</span>
-          <span rel="tooltip" data-place="top">TOP</span>
-        </StaticUI>
-      </div>
+        <h1>Follow MOuse - top default</h1>
+        <div className="have-tooltip">
+          <div className="box-grp demo-dynamic">
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'top',
+              }}
+              name="you! I follow by your mouse..."/>
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'top',
+              }}
+              name="you! I follow by your mouse..."/>
+          </div>
+        </div>
 
-      <h1>Follow MOuse - right default</h1>
-      <div className="box-grp demo-dynamic">
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'right',
-          }}
-          name="you! I follow by your mouse..."/>
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'right',
-          }}
-          name="you! I follow by your mouse..."/>
-      </div>
+        <h1>Static Demo</h1>
+        <div className="box-grp demo-static">
+          <Example {...this.props}
+            key="static01"
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              isFollowMouse: false,
+            }}
+            name="you! I am static Box"
+          >
+            <span rel="tooltip" data-place="bottom">BOTTOM</span>
+            <span rel="tooltip" data-place="right">RIGHT</span>
+            <span rel="tooltip" data-place="left">LEFT</span>
+            <span rel="tooltip">TOP</span>
+          </Example>
+          <Example {...this.props}
+            key="static02"
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              isFollowMouse: false,
+            }}
+            name="you! I am static Box"
+          >
+            <span rel="tooltip" data-place="bottom">BOTTOM</span>
+            <span rel="tooltip" data-place="right">RIGHT</span>
+            <span rel="tooltip" data-place="left">LEFT</span>
+            <span rel="tooltip" data-place="top">TOP</span>
+          </Example>
+        </div>
 
-      <h1>Follow MOuse - left default</h1>
-      <div className="box-grp demo-dynamic">
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'left',
-          }}
-          name="you! I follow by your mouse..."/>
-        <DynamicUI {...props}
-          tooltip={{
-            dataTooltip: dataTooltipDefault,
-            place: 'left',
-          }}
-          name="you! I follow by your mouse..."/>
+        <h1>Follow MOuse - right default</h1>
+        <div className="box-grp demo-dynamic">
+          <HelloWorld {...this.props}
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              place: 'right',
+            }}
+            name="you! I follow by your mouse..."/>
+          <HelloWorld {...this.props}
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              place: 'right',
+            }}
+            name="you! I follow by your mouse..."/>
+        </div>
+
+        <h1>Follow MOuse - left default</h1>
+        <div className="box-grp demo-dynamic">
+          <HelloWorld {...this.props}
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              place: 'left',
+            }}
+            name="you! I follow by your mouse..."/>
+          <HelloWorld {...this.props}
+            tooltip={{
+              dataTooltip: dataTooltipDefault,
+              place: 'left',
+            }}
+            name="you! I follow by your mouse..."/>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+
+}
 
 render(
   <Demo />
-  , document.getElementById('app'));
+  , document.getElementById('root'));

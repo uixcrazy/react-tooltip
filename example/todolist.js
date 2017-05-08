@@ -20,10 +20,10 @@ const todoItems = [
 
 
 setTimeout(() => {
-  new ttt('list-group');
+  new ttt('list-group', document);
 }, 1000);
 render(
   <div>
     <List initItems={todoItems}/>
   </div>
-  , document.getElementById('app'));
+  , document.getElementById('root'));
