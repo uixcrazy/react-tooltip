@@ -22,7 +22,6 @@
  */
 
 export default function (event, target, container, tooltipEl, place, isFollowMouse, offset) {
-
   const widthTooltipEl = tooltipEl.offsetWidth;
   const heightTooltipEl = tooltipEl.offsetHeight;
   const actualOffset = 10 + offset;

@@ -2,7 +2,7 @@
 import React from 'react';  // eslint-disable-line
 import { render } from 'react-dom'; // eslint-disable-line
 import List from './todolist/index'; // eslint-disable-line
-import ttt from '../src/jspure/Tooltip';
+import Ttt from '../src/jspure/Tooltip';
 
 const todoItems = [
   { text: 'redux', done: false },
@@ -20,7 +20,7 @@ const todoItems = [
 
 
 setTimeout(() => {
-  new ttt('list-group', document);
+  new Ttt({ ttContainer: 'list-group' });
 }, 1000);
 render(
   <div>

@@ -1,3 +1,11 @@
+/*
+ * data-param when init tooltip
+ *----------------------------
+ * Object ↓↓↓
+ * ttContainer: body || className || HTML element
+ * -------- at container, not use Flexbox CSS
+ * ttDocument: document or document of iframe
+*/
 
 /*
  * data-param for tooltipItem
@@ -24,12 +32,18 @@ import getPosition from './GetPosition';
 import '../tooltip.scss';
 
 class Tooltip {
-  constructor(className, _document) {
-    this.document = _document;
-    console.log(typeof className);
-    console.log(className instanceof HTMLElement); // maybe DOM
-    // continues check
-    this.container = this.document.querySelector(`.${className}`);
+  constructor(props) {
+    const ttContainer = props.ttContainer || 'body';
+    this.document = props.ttDocument || document;
+
+    this.container = document.getElementsByTagName('BODY')[0];
+    if (typeof ttContainer === 'string' && ttContainer.toUpperCase() !== 'BODY') { // is className
+      this.container = this.document.querySelector(`.${ttContainer}`);
+    }
+    if (typeof ttContainer === 'object' && ttContainer.nodeType === 1) {
+      this.container = ttContainer;
+    }
+
     this.baseClassName = 'tooltip';
     if (!!('ontouchstart' in window)) {
       return;
@@ -42,16 +56,16 @@ class Tooltip {
         }
       }, false);
       this.container.addEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
-      this.container.addEventListener('mouseout', (event) => { this.hideTooltip(event); }, false);
+      this.container.addEventListener('mouseout', () => { this.hideTooltip(); }, false);
     }
     this.state = {
       dataTip: null,
       place: 'top',
       offset: 0,
-      // tooltipEl: null,
-      // tooltipContent: null,
-      // tooltipArrowOutside: null,
-      // tooltipArrowInside: null,
+      tooltipEl: null,
+      tooltipContent: null,
+      tooltipArrowOutside: null,
+      tooltipArrowInside: null,
     };
     this.createTooltip();
   }
@@ -71,7 +85,7 @@ class Tooltip {
     }
   }
 
-  hideTooltip(event) {
+  hideTooltip() { // event
     const { tooltipEl } = this.state;
     tooltipEl.classList.remove('show');
 
@@ -94,7 +108,7 @@ class Tooltip {
     const position = getPosition(event, this.container, tooltipEl, place, offset);
 
     if (position.hide) {
-      this.hideTooltip(event);
+      this.hideTooltip();
       return;
     }
 
@@ -107,9 +121,9 @@ class Tooltip {
       tooltipEl.classList.add(position.place);
     }
 
-    // Set tooltip position ~~ Math.floor(Double)
-    tooltipEl.style.left = `${~~position.position.left}px`;
-    tooltipEl.style.top = `${~~position.position.top}px`;
+    // Set tooltip position ~~ ← Math.floor(Double)
+    tooltipEl.style.left = `${Math.floor(position.position.left)}px`;
+    tooltipEl.style.top = `${Math.floor(position.position.top)}px`;
     if (position.positionArrow) {
       tooltipArrowOutside.style.left = `${position.positionArrow.left}px`;
       tooltipArrowInside.style.left = `${position.positionArrow.left}px`;
@@ -148,6 +162,6 @@ class Tooltip {
 
 export default Tooltip;
 
-// target.addEventListener('mouseenter', this.showTooltip);
-// target.addEventListener('mousemove', this.updateTooltip);
-// target.addEventListener('mouseleave', this.hideTooltip);
+// Reference:
+//    https://www.w3schools.com/jsref/prop_node_nodetype.asp
+//    https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/typeof

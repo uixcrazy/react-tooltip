@@ -38,9 +38,8 @@ class Demo extends Component {
   componentDidMount() {
     const className = 'have-tooltip';
     const containerList = document.querySelectorAll(`.${className}`);
-    console.log('did mounnt', containerList);
     containerList.forEach(function (container) {
-      new tooltip(container, document);
+      new tooltip({ ttContainer: container });
     });
   }
 
@@ -89,65 +88,71 @@ class Demo extends Component {
         </div>
 
         <h1>Static Demo</h1>
-        <div className="box-grp demo-static">
-          <Example {...this.props}
-            key="static01"
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              isFollowMouse: false,
-            }}
-            name="you! I am static Box"
-          >
-            <span rel="tooltip" data-place="bottom">BOTTOM</span>
-            <span rel="tooltip" data-place="right">RIGHT</span>
-            <span rel="tooltip" data-place="left">LEFT</span>
-            <span rel="tooltip">TOP</span>
-          </Example>
-          <Example {...this.props}
-            key="static02"
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              isFollowMouse: false,
-            }}
-            name="you! I am static Box"
-          >
-            <span rel="tooltip" data-place="bottom">BOTTOM</span>
-            <span rel="tooltip" data-place="right">RIGHT</span>
-            <span rel="tooltip" data-place="left">LEFT</span>
-            <span rel="tooltip" data-place="top">TOP</span>
-          </Example>
+        <div className="have-tooltip">
+          <div className="box-grp demo-static">
+            <Example {...this.props}
+              key="static01"
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                isFollowMouse: false,
+              }}
+              name="you! I am static Box"
+            >
+              <span rel="tooltip" data-place="bottom" data-tip="BOTTOM">BOTTOM</span>
+              <span rel="tooltip" data-place="right" data-tip="RIGHT">RIGHT</span>
+              <span rel="tooltip" data-place="left" data-tip="LEFT">LEFT</span>
+              <span rel="tooltip" data-tip="TOP">TOP</span>
+            </Example>
+            <Example {...this.props}
+              key="static02"
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                isFollowMouse: false,
+              }}
+              name="you! I am static Box"
+            >
+              <span rel="tooltip" data-place="bottom" data-tip="BOTTOM">BOTTOM</span>
+              <span rel="tooltip" data-place="right" data-tip="RIGHT">RIGHT</span>
+              <span rel="tooltip" data-place="left" data-tip="LEFT">LEFT</span>
+              <span rel="tooltip" data-tip="TOP">TOP</span>
+            </Example>
+          </div>
         </div>
 
         <h1>Follow MOuse - right default</h1>
-        <div className="box-grp demo-dynamic">
-          <HelloWorld {...this.props}
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              place: 'right',
-            }}
-            name="you! I follow by your mouse..."/>
-          <HelloWorld {...this.props}
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              place: 'right',
-            }}
-            name="you! I follow by your mouse..."/>
-        </div>
+        <div className="have-tooltip">
+          <div className="box-grp demo-dynamic">
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'right',
+              }}
+              name="you! I follow by your mouse..."/>
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'right',
+              }}
+              name="you! I follow by your mouse..."/>
+          </div>
+         </div>
 
         <h1>Follow MOuse - left default</h1>
-        <div className="box-grp demo-dynamic">
-          <HelloWorld {...this.props}
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              place: 'left',
-            }}
-            name="you! I follow by your mouse..."/>
-          <HelloWorld {...this.props}
-            tooltip={{
-              dataTooltip: dataTooltipDefault,
-              place: 'left',
-            }}
-            name="you! I follow by your mouse..."/>
+        <div className="have-tooltip">
+          <div className="box-grp demo-dynamic">
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'left',
+              }}
+              name="you! I follow by your mouse..."/>
+            <HelloWorld {...this.props}
+              tooltip={{
+                dataTooltip: dataTooltipDefault,
+                place: 'left',
+              }}
+              name="you! I follow by your mouse..."/>
+          </div>
         </div>
       </div>
     );
