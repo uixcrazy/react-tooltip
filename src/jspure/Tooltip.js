@@ -33,8 +33,13 @@ import '../tooltip.scss';
 
 class Tooltip {
   constructor(props) {
-    const ttContainer = props.ttContainer || 'body';
-    this.document = props.ttDocument || document;
+    let ttContainer = 'body'; // default
+    this.document = document; // default
+
+    if (props) {
+      if (props.ttContainer) ttContainer = props.ttContainer;
+      if (props.ttDocument) this.document = props.ttDocument;
+    }
 
     this.container = document.getElementsByTagName('BODY')[0];
     if (typeof ttContainer === 'string' && ttContainer.toUpperCase() !== 'BODY') { // is className
@@ -76,12 +81,10 @@ class Tooltip {
       const place = target.getAttribute('data-place') || 'top';
       const offset = Number(target.getAttribute('data-offset')) || 0;
 
-      if (dataTip) {
-        const { tooltipEl } = this.state;
-        Object.assign(this.state, { dataTip, place, offset });
-        tooltipEl.classList.add('show');
-        this.updateTooltip(event);
-      }
+      const { tooltipEl } = this.state;
+      Object.assign(this.state, { dataTip, place, offset });
+      if (dataTip) tooltipEl.classList.add('show');
+      this.updateTooltip(event);
     }
   }
 
@@ -107,7 +110,7 @@ class Tooltip {
 
     const position = getPosition(event, this.container, tooltipEl, place, offset);
 
-    if (position.hide) {
+    if (position.hide || !dataTip) {
       this.hideTooltip();
       return;
     }
