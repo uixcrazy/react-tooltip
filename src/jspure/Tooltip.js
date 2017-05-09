@@ -35,10 +35,12 @@ class Tooltip {
   constructor(props) {
     let ttContainer = 'body'; // default
     this.document = document; // default
+    this.baseClassName = 'tooltip'; // default
 
     if (props) {
       if (props.ttContainer) ttContainer = props.ttContainer;
       if (props.ttDocument) this.document = props.ttDocument;
+      if (props.ttClassName) this.baseClassName = props.ttClassName;
     }
 
     this.container = document.getElementsByTagName('BODY')[0];
@@ -49,7 +51,6 @@ class Tooltip {
       this.container = ttContainer;
     }
 
-    this.baseClassName = 'tooltip';
     if (!!('ontouchstart' in window)) {
       return;
     }
