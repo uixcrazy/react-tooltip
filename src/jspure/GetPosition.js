@@ -22,25 +22,19 @@ export default function (event, container, tooltipEl, place, offset) {
   const actualOffset = 10 + offset;
   const actualOffsetReverse = 30 + offset;
 
-  // const marginLeft = parseInt(getComputedStyle(container, '').getPropertyValue('margin-left'), 10);
-  // const marginTop = parseInt(getComputedStyle(container, '').getPropertyValue('margin-top'), 10);
   const borderLeftWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-left-width'), 10);
   const borderTopWidth = parseInt(getComputedStyle(container, '').getPropertyValue('border-top-width'), 10);
 
-  // const mouseX = event.clientX;
-  // const mouseY = event.clientY;
-  const mouseX = event.pageX
-    - container.offsetLeft
-    - borderLeftWidth;
-  const mouseY = event.pageY
-    - container.offsetTop
-    - borderTopWidth;
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
 
   const boundingClientRectContainer = container.getBoundingClientRect(); // for browser's window
   const topContainerEl = boundingClientRectContainer.top;  // border + padding
   const leftContainerEl = boundingClientRectContainer.left;
   const widthContainerEl = container.offsetWidth; // border
   const heightContainerEl = container.offsetHeight;
+  const xCursorExtra = boundingClientRectContainer.left + borderLeftWidth;
+  const yCursorExtra = boundingClientRectContainer.top + borderTopWidth;
 
   const maxLeftContainer = widthContainerEl + leftContainerEl; // ←-- rightContainerEl
   const bottomContainerEl = topContainerEl + heightContainerEl;
@@ -97,8 +91,8 @@ export default function (event, container, tooltipEl, place, offset) {
       place: currentPlace,
       hide: currentHide,
       position: {
-        left: xCursorFinal,
-        top: yCursorFinal,
+        left: xCursorFinal - xCursorExtra,
+        top: yCursorFinal - yCursorExtra,
       },
       positionArrow: {
         left: positionArrowLeft,
@@ -154,8 +148,8 @@ export default function (event, container, tooltipEl, place, offset) {
       place: currentPlace,
       hide: currentHide,
       position: {
-        left: xCursorFinal,
-        top: yCursorFinal,
+        left: xCursorFinal - xCursorExtra,
+        top: yCursorFinal - yCursorExtra,
       },
       positionArrow: {
         top: positionArrowTop,

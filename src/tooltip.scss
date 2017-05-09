@@ -31,6 +31,10 @@ $tooltip-fontsize: 15px; // 9
   }
 }
 
+[rel="#{$prefix}"] {
+  cursor: pointer;
+}
+
 .#{$prefix}-wrapper {
   position: relative;
   display: inline-block;

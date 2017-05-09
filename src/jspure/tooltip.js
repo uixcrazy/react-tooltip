@@ -122,15 +122,16 @@ class Tooltip {
     }
 
     // Set tooltip position ~~ ← Math.floor(Double)
-    tooltipEl.style.left = `${Math.floor(position.position.left)}px`;
-    tooltipEl.style.top = `${Math.floor(position.position.top)}px`;
+    tooltipEl.style.left = `${Math.round(position.position.left)}px`;
+    tooltipEl.style.top = `${Math.round(position.position.top)}px`;
+    tooltipArrowOutside.removeAttribute('style'); // reset
+    tooltipArrowInside.removeAttribute('style'); // reset
     if (position.positionArrow) {
-      tooltipArrowOutside.style.left = `${position.positionArrow.left}px`;
-      tooltipArrowInside.style.left = `${position.positionArrow.left}px`;
-      tooltipArrowOutside.style.top = `${position.positionArrow.top}px`;
-      tooltipArrowInside.style.top = `${position.positionArrow.top}px`;
+      tooltipArrowOutside.style.left = `${Math.round(position.positionArrow.left)}px`;
+      tooltipArrowInside.style.left = `${Math.round(position.positionArrow.left)}px`;
+      tooltipArrowOutside.style.top = `${Math.round(position.positionArrow.top)}px`;
+      tooltipArrowInside.style.top = `${Math.round(position.positionArrow.top)}px`;
     }
-    // console.log(position);
   }
 
   createTooltip() {

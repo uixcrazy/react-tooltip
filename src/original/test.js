@@ -28,3 +28,6 @@ const borderTopWidth = parseInt(getComputedStyle(container, '').getPropertyValue
 
 const containerList = this.document.querySelectorAll(`.${className}`);
 
+const xCursorExtra = boundingClientRectContainer.left + borderLeftWidth;
+const yCursorExtra = boundingClientRectContainer.top + borderTopWidth;
+

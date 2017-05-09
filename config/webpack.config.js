@@ -82,7 +82,8 @@ export default (entry = null) => {
     },
 
     performance: {
-      hints: "warning", // enum
+      hints: false, // NOT GOOD
+      // hints: "warning", // enum
       maxAssetSize: 200000, // int (in bytes),
       maxEntrypointSize: 400000, // int (in bytes)
       assetFilter: function(assetFilename) {

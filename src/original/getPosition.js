@@ -1,262 +1,189 @@
-// https://github.com/wwayne/react-tooltip/blob/master/src/utils/getPosition.js
-// -----------------------------------------------------------------------------
 /**
  * Calculate the position of tooltip
  *
  * @params
- * - `e` {Event} the event of current mouse
+ * - `event` {Event} the event of current mouse
  * - `target` {Element} the currentTarget of the event
- * - `node` {DOM} the react-tooltip object
+ * - `container` {DOM} Keeps the tooltip within the bounds of this element.
+ * - `tooltipEl` {DOM}
  * - `place` {String} top / right / bottom / left
- * - `effect` {String} float / solid
- * - `offset` {Object} the offset to default position
+ * - `isFollowMouse` {String} true / false
+ * - `offset` {Number} the offset to default position
  *
  * @return {Object
- * - `isNewState` {Bool} required
- * - `newState` {Object}
+ * - `place` {String} new placement
+ * - `hide` {Boolean} return true, if incorrect
  * - `position` {OBject} {left: {Number}, top: {Number}}
+ * - `positionArrow` {OBject} {left: {Number}, top: {Number}}
  */
-export default function (e, target, node, place, effect, offset) {
-  const tipWidth = node.clientWidth
-  const tipHeight = node.clientHeight
-  const {mouseX, mouseY} = getCurrentOffset(e, target, effect)
-  const defaultOffset = getDefaultPosition(effect, target.clientWidth, target.clientHeight, tipWidth, tipHeight)
-  const {extraOffset_X, extraOffset_Y} = calculateOffset(offset)
 
-  const windowWidth = window.innerWidth
-  const windowHeight = window.innerHeight
+/*
+ * if (!isFollowMouse) we don't care container
+ */
 
-  const {parentTop, parentLeft} = getParent(node)
+export default function (event, target, container, tooltipEl, place, isFollowMouse, offset) {
+  const widthTooltipEl = tooltipEl.offsetWidth;
+  const heightTooltipEl = tooltipEl.offsetHeight;
+  const actualOffset = 10 + offset;
+  const actualOffsetReverse = 30 + offset;
 
-  // Get the edge offset of the tooltip
-  const getTipOffsetLeft = (place) => {
-    const offset_X = defaultOffset[place].l
-    return mouseX + offset_X + extraOffset_X
-  }
-  const getTipOffsetRight = (place) => {
-    const offset_X = defaultOffset[place].r
-    return mouseX + offset_X + extraOffset_X
-  }
-  const getTipOffsetTop = (place) => {
-    const offset_Y = defaultOffset[place].t
-    return mouseY + offset_Y + extraOffset_Y
-  }
-  const getTipOffsetBottom = (place) => {
-    const offset_Y = defaultOffset[place].b
-    return mouseY + offset_Y + extraOffset_Y
-  }
-
-  // Judge if the tooltip has over the window(screen)
-  const outsideVertical = () => {
-    let result = false
-    let newPlace
-    if (getTipOffsetTop('left') < 0 &&
-      getTipOffsetBottom('left') <= windowHeight &&
-      getTipOffsetBottom('bottom') <= windowHeight) {
-      result = true
-      newPlace = 'bottom'
-    } else if (getTipOffsetBottom('left') > windowHeight &&
-      getTipOffsetTop('left') >= 0 &&
-      getTipOffsetTop('top') >= 0) {
-      result = true
-      newPlace = 'top'
+  if (!isFollowMouse) {
+    const boundingClientRectTarget = target.getBoundingClientRect();
+    const targetTop = boundingClientRectTarget.top;
+    const targetLeft = boundingClientRectTarget.left;
+    const targetWidth = target.clientWidth;
+    const targetHeight = target.clientHeight;
+    let left = (targetLeft + (targetWidth / 2)) - (widthTooltipEl / 2);
+    let top = targetTop - heightTooltipEl - 10 - offset;
+    // if (place === 'top') ← default
+    if (place === 'bottom') {
+      top = targetTop + targetHeight + actualOffset;
     }
-    return {result, newPlace}
-  }
-  const outsideLeft = () => {
-    let {result, newPlace} = outsideVertical() // Deal with vertical as first priority
-    if (result && outsideHorizontal().result) {
-      return {result: false} // No need to change, if change to vertical will out of space
+    if (place === 'right') {
+      left = targetLeft + targetWidth + actualOffset;
+      top = (targetTop + (targetHeight / 2)) - (heightTooltipEl / 2);
     }
-    if (!result && getTipOffsetLeft('left') < 0 && getTipOffsetRight('right') <= windowWidth) {
-      result = true // If vertical ok, but let out of side and right won't out of side
-      newPlace = 'right'
+    if (place === 'left') {
+      left = targetLeft - widthTooltipEl - actualOffset;
+      top = (targetTop + (targetHeight / 2)) - (heightTooltipEl / 2);
     }
-    return {result, newPlace}
-  }
-  const outsideRight = () => {
-    let {result, newPlace} = outsideVertical()
-    if (result && outsideHorizontal().result) {
-      return {result: false} // No need to change, if change to vertical will out of space
-    }
-    if (!result && getTipOffsetRight('right') > windowWidth && getTipOffsetLeft('left') >= 0) {
-      result = true
-      newPlace = 'left'
-    }
-    return {result, newPlace}
+    return ({
+      position: {
+        left,
+        top,
+      },
+    });
   }
 
-  const outsideHorizontal = () => {
-    let result = false
-    let newPlace
-    if (getTipOffsetLeft('top') < 0 &&
-      getTipOffsetRight('top') <= windowWidth &&
-      getTipOffsetRight('right') <= windowWidth) {
-      result = true
-      newPlace = 'right'
-    } else if (getTipOffsetRight('top') > windowWidth &&
-      getTipOffsetLeft('top') >= 0 &&
-      getTipOffsetLeft('left') >= 0) {
-      result = true
-      newPlace = 'left'
-    }
-    return {result, newPlace}
-  }
-  const outsideTop = () => {
-    let {result, newPlace} = outsideHorizontal()
-    if (result && outsideVertical().result) {
-      return {result: false}
-    }
-    if (!result && getTipOffsetTop('top') < 0 && getTipOffsetBottom('bottom') <= windowHeight) {
-      result = true
-      newPlace = 'bottom'
-    }
-    return {result, newPlace}
-  }
-  const outsideBottom = () => {
-    let {result, newPlace} = outsideHorizontal()
-    if (result && outsideVertical().result) {
-      return {result: false}
-    }
-    if (!result && getTipOffsetBottom('bottom') > windowHeight && getTipOffsetTop('top') >= 0) {
-      result = true
-      newPlace = 'top'
-    }
-    return {result, newPlace}
-  }
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
 
-  // Return new state to change the placement to the reverse if possible
-  const outsideLeftResult = outsideLeft()
-  const outsideRightResult = outsideRight()
-  const outsideTopResult = outsideTop()
-  const outsideBottomResult = outsideBottom()
+  const boundingClientRectContainer = container.getBoundingClientRect(); // for browser's window
+  const topContainerEl = boundingClientRectContainer.top;  // border + padding
+  const leftContainerEl = boundingClientRectContainer.left;
+  const widthContainerEl = container.offsetWidth; // border
+  const heightContainerEl = container.offsetHeight;
 
-  if (place === 'left' && outsideLeftResult.result) {
+  const maxLeftContainer = widthContainerEl + leftContainerEl; // ←-- rightContainerEl
+  const bottomContainerEl = topContainerEl + heightContainerEl;
+
+  // ↓↓↓ top && bottom ↓↓↓
+  if ((place === 'top') || (place === 'bottom')) {
+    const xCursor = mouseX - (widthTooltipEl / 2);
+    const yCursor = (place === 'top')
+      ? mouseY - (heightTooltipEl + actualOffset)
+      : mouseY + actualOffsetReverse;
+    const rightEl = xCursor + widthTooltipEl;
+    const bottomEl = yCursor + heightTooltipEl;
+
+    let xCursorFinal = xCursor;
+    let yCursorFinal = yCursor;
+    let positionArrowLeft = widthTooltipEl / 2;
+    let currentPlace = null;
+    let currentHide = false;
+
+    // ↓↓↓ not enough width to show tooltip
+    if (widthContainerEl < widthTooltipEl) return { hide: true };
+    // ↑↑↑
+
+    if (xCursor < leftContainerEl) { // to left
+      const deviate = leftContainerEl - xCursor;
+      xCursorFinal = leftContainerEl;
+      positionArrowLeft = (widthTooltipEl / 2) - deviate;
+      if (positionArrowLeft < 10) positionArrowLeft = 10;
+    }
+
+    if (rightEl > maxLeftContainer) { // to right
+      xCursorFinal = maxLeftContainer - widthTooltipEl;
+      let deviate = xCursor - xCursorFinal;
+      const deviateMax = (widthTooltipEl / 2) - 10;
+      if (deviate > deviateMax) deviate = deviateMax;
+      positionArrowLeft = (widthTooltipEl / 2) + deviate;
+    }
+
+    if ((place === 'top') && (yCursor < topContainerEl)) { // to bottom
+      yCursorFinal = mouseY + actualOffsetReverse;
+      currentPlace = 'bottom';
+      const bottomTooltipEl = yCursorFinal + heightTooltipEl;
+      // ↓↓↓ not enough height to show tooltip
+      if (bottomContainerEl - bottomTooltipEl < 0) currentHide = true;
+    }
+
+    if ((place === 'bottom') && (bottomEl > bottomContainerEl)) { // to top
+      yCursorFinal = mouseY - (heightTooltipEl + actualOffset);
+      currentPlace = 'top';
+      if (yCursorFinal < topContainerEl) currentHide = true;
+    }
+
     return {
-      isNewState: true,
-      newState: {place: outsideLeftResult.newPlace}
+      place: currentPlace,
+      hide: currentHide,
+      position: {
+        left: xCursorFinal,
+        top: yCursorFinal,
+      },
+      positionArrow: {
+        left: positionArrowLeft,
+      },
+    };
+  }
+
+  // ↓↓↓ left && right ↓↓↓
+  if (place === 'left' || (place === 'right')) {
+    const xCursor = (place === 'left')
+      ? mouseX - (widthTooltipEl + actualOffset)
+      : mouseX + actualOffset;
+    const yCursor = mouseY - (heightTooltipEl / 2);
+    const rightEl = xCursor + widthTooltipEl;
+    const bottomEl = yCursor + heightTooltipEl;
+
+    let xCursorFinal = xCursor;
+    let yCursorFinal = yCursor;
+    let positionArrowTop = heightTooltipEl / 2;
+    let currentPlace = null;
+    let currentHide = false;
+
+    if (yCursor < topContainerEl) { // top
+      const deviate = topContainerEl - yCursor;
+      yCursorFinal = topContainerEl;
+      positionArrowTop = (heightTooltipEl / 2) - deviate;
+      if (positionArrowTop < 10) positionArrowTop = 10;
     }
-  } else if (place === 'right' && outsideRightResult.result) {
+
+    if (bottomEl > bottomContainerEl) { // bottom
+      yCursorFinal = bottomContainerEl - heightTooltipEl;
+      let deviate = yCursor - yCursorFinal;
+      const deviateMax = (heightTooltipEl / 2) - 10;
+      if (deviate > deviateMax) deviate = deviateMax;
+      positionArrowTop = (heightTooltipEl / 2) + deviate;
+    }
+
+    if ((place === 'left') && (xCursor < leftContainerEl)) { // to left
+      xCursorFinal = mouseX + actualOffsetReverse;
+      currentPlace = 'right';
+      const rightTooltipEl = xCursorFinal + widthTooltipEl;
+      // ↓↓↓ not enough width to show tooltip
+      if (maxLeftContainer - rightTooltipEl < 0) currentHide = true;
+    }
+
+    if ((place === 'right') && (rightEl > maxLeftContainer)) { // to right
+      xCursorFinal = mouseX - (widthTooltipEl + actualOffset);
+      currentPlace = 'left';
+      if (xCursorFinal < leftContainerEl) currentHide = true;
+    }
+
     return {
-      isNewState: true,
-      newState: {place: outsideRightResult.newPlace}
-    }
-  } else if (place === 'top' && outsideTopResult.result) {
-    return {
-      isNewState: true,
-      newState: {place: outsideTopResult.newPlace}
-    }
-  } else if (place === 'bottom' && outsideBottomResult.result) {
-    return {
-      isNewState: true,
-      newState: {place: outsideBottomResult.newPlace}
-    }
+      place: currentPlace,
+      hide: currentHide,
+      position: {
+        left: xCursorFinal,
+        top: yCursorFinal,
+      },
+      positionArrow: {
+        top: positionArrowTop,
+      },
+    };
   }
 
-  // Return tooltip offset position
-  return {
-    isNewState: false,
-    position: {
-      left: parseInt(getTipOffsetLeft(place) - parentLeft, 10),
-      top: parseInt(getTipOffsetTop(place) - parentTop, 10)
-    }
-  }
-}
-
-// Get current mouse offset
-const getCurrentOffset = (e, currentTarget, effect) => {
-  const boundingClientRect = currentTarget.getBoundingClientRect()
-  const targetTop = boundingClientRect.top
-  const targetLeft = boundingClientRect.left
-  const targetWidth = currentTarget.clientWidth
-  const targetHeight = currentTarget.clientHeight
-
-  if (effect === 'float') {
-    return {
-      mouseX: e.clientX,
-      mouseY: e.clientY
-    }
-  }
-  return {
-    mouseX: targetLeft + (targetWidth / 2),
-    mouseY: targetTop + (targetHeight / 2)
-  }
-}
-
-// List all possibility of tooltip final offset
-// This is useful in judging if it is necessary for tooltip to switch position when out of window
-const getDefaultPosition = (effect, tipWidth, tipHeight) => {
-  let top
-  let right
-  let bottom
-  let left
-  const disToMouse = 3
-  const triangleHeight = 2
-  const cursorHeight = 12 // Optimize for float bottom only, cause the cursor will hide the tooltip
-
-    top = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: -(tipHeight + disToMouse + triangleHeight),
-      b: -disToMouse
-    }
-    bottom = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: disToMouse + cursorHeight,
-      b: tipHeight + disToMouse + triangleHeight + cursorHeight
-    }
-    left = {
-      l: -(tipWidth + disToMouse + triangleHeight),
-      r: -disToMouse,
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
-    right = {
-      l: disToMouse,
-      r: tipWidth + disToMouse + triangleHeight,
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
-
-
-
-  return {top, bottom, left, right}
-}
-
-// Consider additional offset into position calculation
-const calculateOffset = (offset) => {
-  let extraOffset_X = 0
-  let extraOffset_Y = 0
-
-  if (Object.prototype.toString.apply(offset) === '[object String]') {
-    offset = JSON.parse(offset.toString().replace(/\'/g, '\"'))
-  }
-  for (let key in offset) {
-    if (key === 'top') {
-      extraOffset_Y -= parseInt(offset[key], 10)
-    } else if (key === 'bottom') {
-      extraOffset_Y += parseInt(offset[key], 10)
-    } else if (key === 'left') {
-      extraOffset_X -= parseInt(offset[key], 10)
-    } else if (key === 'right') {
-      extraOffset_X += parseInt(offset[key], 10)
-    }
-  }
-
-  return {extraOffset_X, extraOffset_Y}
-}
-
-// Get the offset of the parent elements
-const getParent = (currentTarget) => {
-  let currentParent = currentTarget
-  while (currentParent) {
-    if (window.getComputedStyle(currentParent).getPropertyValue('transform') !== 'none') break
-    currentParent = currentParent.parentElement
-  }
-
-  const parentTop = currentParent && currentParent.getBoundingClientRect().top || 0
-  const parentLeft = currentParent && currentParent.getBoundingClientRect().left || 0
-
-  return {parentTop, parentLeft}
+  return ({ hide: true }); // when incorrect
 }
