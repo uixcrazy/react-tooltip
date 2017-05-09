@@ -2,9 +2,11 @@
  * data-param when init tooltip
  *----------------------------
  * Object ↓↓↓
- * ttContainer: body || className || HTML element
- * -------- at container, not use Flexbox CSS
+ * ttContainer: body || className || HTML element -------- at container, not use Flexbox CSS
+ * ttClassName: allow you change ClassName of Tooltip
  * ttDocument: document or document of iframe
+ * ttAfterShow:→ function afterShow()
+ * ttAfterHide:→ function afterHide()
 */
 
 /*
@@ -14,19 +16,6 @@
  * data-place="top"
  * data-offset="10"
 */
-
-/*
- * container ----- must className
- * afterShow → not yet
- * afterHide → not yet
- */
-
-/*
- * Event
- * ----- mouseover
- * ----- onmouseout
- * ----- onmousemove
- */
 
 import getPosition from './GetPosition';
 import '../tooltip.scss';
@@ -45,7 +34,7 @@ class Tooltip {
       if (props.ttAfterHide) this.afterHide = props.ttAfterHide;
     }
 
-    this.container = document.getElementsByTagName('BODY')[0];
+    this.container = this.document.getElementsByTagName('BODY')[0];
     if (typeof ttContainer === 'string' && ttContainer.toUpperCase() !== 'BODY') { // is className
       this.container = this.document.querySelector(`.${ttContainer}`);
     }
@@ -88,7 +77,7 @@ class Tooltip {
       Object.assign(this.state, { dataTip, place, offset });
       if (dataTip) {
         tooltipEl.classList.add('show');
-        if (this.afterShow) this.afterShow();
+        if (this.afterShow && typeof this.afterShow === 'function') this.afterShow();
       }
       this.updateTooltip(event);
     }
@@ -97,7 +86,9 @@ class Tooltip {
   hideTooltip() { // event
     const { tooltipEl } = this.state;
     tooltipEl.classList.remove('show');
-    if (this.state.dataTip && this.afterHide) this.afterHide();
+    if (this.state.dataTip && this.afterHide && typeof this.afterHide === 'function') {
+      this.afterHide();
+    }
 
     // this.container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
     // this.container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
