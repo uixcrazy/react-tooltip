@@ -10,7 +10,7 @@ import './demo.scss';
 const HelloWorld = ({ name }) => (
  <div>
     <p rel="tooltip" data-tip="ngốc nghếch wa đi">this is tooltip</p>
-    <p rel="tooltip">
+    <p rel="tooltip" data-tip="<div>Dai.Le<div><span style='color: red'>号を授かったのが始まりと</span><span>ABCG</span></div>Nogc</div>">
     日蓮上人より長谷山本土寺と寺号を授かったのが始まりとさ れており、池上の長栄山本門寺、鎌倉の長興山妙本寺とともに朗門の三長三本の本山と称される名刹の名刹。1万株のあじさいと5千株の花菖蒲が有名で、別名「あじさい寺」とも呼ばれている。所々にソメイヨシノがあるほか、期間は短いがシダレザクラも鑑賞できる花見スポット。桜の下には百余の雪柳が咲く。
     </p>
     <p style={{ paddingBottom: 20, textAlign: 'center', color: '#c1403d' }}>

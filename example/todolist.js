@@ -20,7 +20,15 @@ const todoItems = [
 
 
 setTimeout(() => {
-  new Ttt({ ttContainer: 'list-group' });
+  new Ttt({
+    ttContainer: 'list-group',
+    // ttAfterShow: function() {
+    //   console.log('ttAfterShow');
+    // },
+    // ttAfterHide: function() {
+    //   console.log('ttAfterHide');
+    // },
+  });
 }, 1000);
 render(
   <div>

@@ -41,6 +41,8 @@ class Tooltip {
       if (props.ttContainer) ttContainer = props.ttContainer;
       if (props.ttDocument) this.document = props.ttDocument;
       if (props.ttClassName) this.baseClassName = props.ttClassName;
+      if (props.ttAfterShow) this.afterShow = props.ttAfterShow;
+      if (props.ttAfterHide) this.afterHide = props.ttAfterHide;
     }
 
     this.container = document.getElementsByTagName('BODY')[0];
@@ -84,7 +86,10 @@ class Tooltip {
 
       const { tooltipEl } = this.state;
       Object.assign(this.state, { dataTip, place, offset });
-      if (dataTip) tooltipEl.classList.add('show');
+      if (dataTip) {
+        tooltipEl.classList.add('show');
+        if (this.afterShow) this.afterShow();
+      }
       this.updateTooltip(event);
     }
   }
@@ -92,6 +97,7 @@ class Tooltip {
   hideTooltip() { // event
     const { tooltipEl } = this.state;
     tooltipEl.classList.remove('show');
+    if (this.state.dataTip && this.afterHide) this.afterHide();
 
     // this.container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
     // this.container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
