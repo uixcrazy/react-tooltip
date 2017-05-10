@@ -3,10 +3,8 @@
  *----------------------------
  * Object ↓↓↓
  * ttContainer: body || className || HTML element -------- at container, not use Flexbox CSS
- * ttClassName: allow you change ClassName of Tooltip
  * ttDocument: document or document of iframe
- * ttAfterShow:→ function afterShow()
- * ttAfterHide:→ function afterHide()
+ * ttClassName: allow you change ClassName of Tooltip
 */
 
 /*
@@ -15,6 +13,14 @@
  * data-tip="content tooltip"
  * data-place="top"
  * data-offset="10"
+*/
+
+/*
+ * Return: Function
+ *----------------------------
+ * changeClassName()
+ * afterShow()  // this.afterShow
+ * afterHide()
 */
 
 import getPosition from './GetPosition';
@@ -31,8 +37,6 @@ class Tooltip {
       if (props.ttContainer) ttContainer = props.ttContainer;
       if (props.ttDocument) this.document = props.ttDocument;
       if (props.ttClassName) this.className = props.ttClassName;
-      if (props.ttAfterShow) this.afterShow = props.ttAfterShow;
-      if (props.ttAfterHide) this.afterHide = props.ttAfterHide;
     }
 
     this.container = this.document.getElementsByTagName('BODY')[0];
