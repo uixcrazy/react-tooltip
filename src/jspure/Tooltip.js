@@ -2,9 +2,9 @@
  * data-param when init tooltip
  *----------------------------
  * Object ↓↓↓
- * ttContainer: body || className || HTML element -------- at container, not use Flexbox CSS
- * ttDocument: document or document of iframe
- * ttClassName: allow you change ClassName of Tooltip
+ * container: body || className || HTML element -------- at container, not use Flexbox CSS
+ * document: document or document of iframe
+ * className: allow you change ClassName of Tooltip
 */
 
 /*
@@ -29,22 +29,22 @@ import '../tooltip.scss';
 
 class Tooltip {
   constructor(props) {
-    let ttContainer = 'body'; // default
+    let container = 'body'; // default
     this._document = document; // default
     this._className = 'tooltip'; // default
 
     if (props) {
-      if (props.ttContainer) ttContainer = props.ttContainer;
-      if (props.ttDocument) this._document = props.ttDocument;
-      if (props.ttClassName) this._className = props.ttClassName;
+      if (props.container) container = props.container;
+      if (props.document) this._document = props.document;
+      if (props.className) this._className = props.className;
     }
 
     this._container = this._document.getElementsByTagName('BODY')[0];
-    if (typeof ttContainer === 'string' && ttContainer.toUpperCase() !== 'BODY') { // is className
-      this._container = this._document.querySelector(`.${ttContainer}`);
+    if (typeof container === 'string' && container.toUpperCase() !== 'BODY') { // is className
+      this._container = this._document.querySelector(`.${container}`);
     }
-    if (typeof ttContainer === 'object' && ttContainer.nodeType === 1) {
-      this._container = ttContainer;
+    if (typeof container === 'object' && container.nodeType === 1) {
+      this._container = container;
     }
 
     // if (!!('ontouchstart' in window)) {

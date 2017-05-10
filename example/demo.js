@@ -41,7 +41,7 @@ class Demo extends Component {
     console.log(containerList);
     Array.prototype.forEach.call(containerList, function (node) {
       console.log(node);
-      const T = new Tooltip({ ttContainer: node });
+      const T = new Tooltip({ container: node });
       console.log(T);
       // Your code here.
     });

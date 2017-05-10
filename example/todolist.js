@@ -21,7 +21,7 @@ const todoItems = [
 
 setTimeout(() => {
   new Ttt({
-    ttContainer: 'list-group',
+    container: 'list-group',
     // ttAfterShow: function() {
     //   console.log('ttAfterShow');
     // },
