@@ -38,7 +38,7 @@ class Demo extends Component {
   componentDidMount() {
     const className = 'have-tooltip';
     const containerList = document.querySelectorAll(`.${className}`);
-    containerList.forEach(function (container) {
+    Object.keys(containerList).forEach(function (container) {
       new tooltip({ ttContainer: container });
     });
   }
@@ -54,7 +54,7 @@ class Demo extends Component {
       <h1>Muti level</h1>
         <div className="have-tooltip" style={{ height: '300px' }}>
           <div rel="tooltip" data-tip="<div><span>tooltip 001</span> <p>刹の名刹。1万株のあじさいと5千株の花菖蒲が有名で、別名「あじさい寺」とも呼ばれている。所々に</p> </div>">
-            <span>AFSDFASd Inc</span>
+            <span id="test">AFSDFASd Inc</span>
             <div style={{ background: '#000', color: '#fff' }}>
 Das Leben ist wie Schokolade, <span>die man Stück für Stück genießen und sich langsam </span> auf der Zunge zergehen lassen soll
 Inicia sesión en Facebook para ver más de ?
