@@ -31,12 +31,12 @@ class Tooltip {
   constructor(props) {
     let ttContainer = 'body'; // default
     this.document = document; // default
-    this.className = 'tooltip'; // default
+    this._className = 'tooltip'; // default
 
     if (props) {
       if (props.ttContainer) ttContainer = props.ttContainer;
       if (props.ttDocument) this.document = props.ttDocument;
-      if (props.ttClassName) this.className = props.ttClassName;
+      if (props.ttClassName) this._className = props.ttClassName;
     }
 
     this.container = this.document.getElementsByTagName('BODY')[0];
@@ -73,7 +73,6 @@ class Tooltip {
       tooltipArrowInside: null,
     };
     this.createTooltip();
-    this.changeClassName = this.changeClassName.bind(this);
   }
 
   showTooltip(event, target) {
@@ -146,16 +145,16 @@ class Tooltip {
 
   createTooltip() {
     let { tooltipEl } = this.state;
-    const haveTooltipEl = this.container.querySelector(`.${this.className}`);
+    const haveTooltipEl = this.container.querySelector(`.${this._className}`);
     if (!tooltipEl && !haveTooltipEl) {
       tooltipEl = this.document.createElement('div');
-      tooltipEl.setAttribute('class', `${this.className}`);
+      tooltipEl.setAttribute('class', `${this._className}`);
       const tooltipArrowOutside = this.document.createElement('span');
-      tooltipArrowOutside.setAttribute('class', `${this.className}-arrow-outside`);
+      tooltipArrowOutside.setAttribute('class', `${this._className}-arrow-outside`);
       const tooltipArrowInside = this.document.createElement('span');
-      tooltipArrowInside.setAttribute('class', `${this.className}-arrow-inside`);
+      tooltipArrowInside.setAttribute('class', `${this._className}-arrow-inside`);
       const tooltipContent = this.document.createElement('span');
-      tooltipContent.setAttribute('class', `${this.className}-content`);
+      tooltipContent.setAttribute('class', `${this._className}-content`);
       tooltipEl.appendChild(tooltipArrowOutside);
       tooltipEl.appendChild(tooltipArrowInside);
       tooltipEl.appendChild(tooltipContent);
@@ -163,15 +162,15 @@ class Tooltip {
       Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
     } else {
       tooltipEl = haveTooltipEl;
-      const tooltipArrowOutside = tooltipEl.querySelector(`.${this.className}-arrow-outside`);
-      const tooltipArrowInside = tooltipEl.querySelector(`.${this.className}-arrow-inside`);
-      const tooltipContent = tooltipEl.querySelector(`.${this.className}-content`);
+      const tooltipArrowOutside = tooltipEl.querySelector(`.${this._className}-arrow-outside`);
+      const tooltipArrowInside = tooltipEl.querySelector(`.${this._className}-arrow-inside`);
+      const tooltipContent = tooltipEl.querySelector(`.${this._className}-content`);
       Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
     }
   }
 
-  changeClassName(className) {
-    this.className = className;
+  set className(className) {
+    this._className = className;
   }
 }
 
