@@ -30,40 +30,40 @@ import '../tooltip.scss';
 class Tooltip {
   constructor(props) {
     let ttContainer = 'body'; // default
-    this.document = document; // default
+    this._document = document; // default
     this._className = 'tooltip'; // default
 
     if (props) {
       if (props.ttContainer) ttContainer = props.ttContainer;
-      if (props.ttDocument) this.document = props.ttDocument;
+      if (props.ttDocument) this._document = props.ttDocument;
       if (props.ttClassName) this._className = props.ttClassName;
     }
 
-    this.container = this.document.getElementsByTagName('BODY')[0];
+    this._container = this._document.getElementsByTagName('BODY')[0];
     if (typeof ttContainer === 'string' && ttContainer.toUpperCase() !== 'BODY') { // is className
-      this.container = this.document.querySelector(`.${ttContainer}`);
+      this._container = this._document.querySelector(`.${ttContainer}`);
     }
     if (typeof ttContainer === 'object' && ttContainer.nodeType === 1) {
-      this.container = ttContainer;
+      this._container = ttContainer;
     }
 
     // if (!!('ontouchstart' in window)) {
     //   return;
     // }
-    if (this.container) {
+    if (this._container) {
       // Event Delegation
       // ------------------------------------------------------
-      // this.container.addEventListener('mouseenter', (event) => { // only fire one time.
-      this.container.addEventListener('mouseover', (event) => {
+      // this._container.addEventListener('mouseenter', (event) => { // only fire one time.
+      this._container.addEventListener('mouseover', (event) => {
         const target = event.target;
-        const isShow = FindTooltip(target, this.container);
+        const isShow = FindTooltip(target, this._container);
         if (isShow !== -1) this.showTooltip(event, isShow);
       });
 
-      this.container.addEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
-      this.container.addEventListener('mouseout', () => { this.hideTooltip(); }, false);
+      this._container.addEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
+      this._container.addEventListener('mouseout', () => { this.hideTooltip(); }, false);
     }
-    this.state = {
+    this._state = {
       dataTip: null,
       place: 'top',
       offset: 0,
@@ -81,8 +81,8 @@ class Tooltip {
       const place = target.getAttribute('data-place') || 'top';
       const offset = Number(target.getAttribute('data-offset')) || 0;
 
-      const { tooltipEl } = this.state;
-      Object.assign(this.state, { dataTip, place, offset });
+      const { tooltipEl } = this._state;
+      Object.assign(this._state, { dataTip, place, offset });
       if (dataTip) {
         tooltipEl.classList.add('show');
         if (this.afterShow && typeof this.afterShow === 'function') this.afterShow();
@@ -92,15 +92,15 @@ class Tooltip {
   }
 
   hideTooltip() { // event
-    const { tooltipEl } = this.state;
+    const { tooltipEl } = this._state;
     tooltipEl.classList.remove('show');
-    if (this.state.dataTip && this.afterHide && typeof this.afterHide === 'function') {
+    if (this._state.dataTip && this.afterHide && typeof this.afterHide === 'function') {
       this.afterHide();
     }
 
-    // this.container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
-    // this.container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
-    // this.container.removeEventListener('mouseleave', (event) => { this.hideTooltip(event); }, false);
+    // this._container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
+    // this._container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
+    // this._container.removeEventListener('mouseleave', (event) => { this.hideTooltip(event); }, false);
   }
 
   updateTooltip(event) {
@@ -112,9 +112,9 @@ class Tooltip {
       tooltipContent,
       tooltipArrowOutside,
       tooltipArrowInside,
-    } = this.state;
+    } = this._state;
 
-    const position = getPosition(event, this.container, tooltipEl, place, offset);
+    const position = getPosition(event, this._container, tooltipEl, place, offset);
 
     if (position.hide || !dataTip) {
       this.hideTooltip();
@@ -144,28 +144,28 @@ class Tooltip {
   }
 
   createTooltip() {
-    let { tooltipEl } = this.state;
-    const haveTooltipEl = this.container.querySelector(`.${this._className}`);
+    let { tooltipEl } = this._state;
+    const haveTooltipEl = this._container.querySelector(`.${this._className}`);
     if (!tooltipEl && !haveTooltipEl) {
-      tooltipEl = this.document.createElement('div');
+      tooltipEl = this._document.createElement('div');
       tooltipEl.setAttribute('class', `${this._className}`);
-      const tooltipArrowOutside = this.document.createElement('span');
+      const tooltipArrowOutside = this._document.createElement('span');
       tooltipArrowOutside.setAttribute('class', `${this._className}-arrow-outside`);
-      const tooltipArrowInside = this.document.createElement('span');
+      const tooltipArrowInside = this._document.createElement('span');
       tooltipArrowInside.setAttribute('class', `${this._className}-arrow-inside`);
-      const tooltipContent = this.document.createElement('span');
+      const tooltipContent = this._document.createElement('span');
       tooltipContent.setAttribute('class', `${this._className}-content`);
       tooltipEl.appendChild(tooltipArrowOutside);
       tooltipEl.appendChild(tooltipArrowInside);
       tooltipEl.appendChild(tooltipContent);
-      this.container.appendChild(tooltipEl);
-      Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
+      this._container.appendChild(tooltipEl);
+      Object.assign(this._state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
     } else {
       tooltipEl = haveTooltipEl;
       const tooltipArrowOutside = tooltipEl.querySelector(`.${this._className}-arrow-outside`);
       const tooltipArrowInside = tooltipEl.querySelector(`.${this._className}-arrow-inside`);
       const tooltipContent = tooltipEl.querySelector(`.${this._className}-content`);
-      Object.assign(this.state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
+      Object.assign(this._state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
     }
   }
 
