@@ -4,7 +4,7 @@
 import React, { Component, PropTypes } from 'react'; // eslint-disable-line
 import { render } from 'react-dom'; // eslint-disable-line
 // import makeWrapperTooltip from '../src/WrapperTooltip';
-import tooltip from '../src/jspure/Tooltip';
+import Tooltip from '../src/jspure/Tooltip';
 import './demo.scss';
 
 const HelloWorld = ({ name }) => (
@@ -38,8 +38,12 @@ class Demo extends Component {
   componentDidMount() {
     const className = 'have-tooltip';
     const containerList = document.querySelectorAll(`.${className}`);
-    Object.keys(containerList).forEach(function (container) {
-      new tooltip({ ttContainer: container });
+    console.log(containerList);
+    Array.prototype.forEach.call(containerList, function (node) {
+      console.log(node);
+      const T = new Tooltip({ ttContainer: node });
+      console.log(T);
+      // Your code here.
     });
   }
 
