@@ -42,16 +42,38 @@ class Tooltip {
       this.container = ttContainer;
     }
 
-    if (!!('ontouchstart' in window)) {
-      return;
-    }
+    // if (!!('ontouchstart' in window)) {
+    //   return;
+    // }
     if (this.container) {
+      // Event Delegation
+      // ------------------------------------------------------
+      // this.container.addEventListener('mouseenter', (event) => { // only fire one time.
       this.container.addEventListener('mouseover', (event) => {
         const target = event.target;
+
         if (target.getAttribute('rel') === 'tooltip') {
           this.showTooltip(event, target);
+        } else {
+          // const parentLevel = event.path.findIndex(el => el.className === this.container.getAttribute('class'));
+          // ↓↓↓
+          let parentLevel = -1;
+          const classOfContainer = this.container.getAttribute('class');
+          console.log(event, event.path);
+          event.path.forEach(function (el, index) { // eslint-disable-line
+            if (el.className === classOfContainer) {
+              parentLevel = index;
+            }
+          });
+          if (parentLevel !== -1) {
+            for (let i = 1; i < parentLevel; i++) { // eslint-disable-line
+              if (event.path[i].attributes.rel && event.path[i].attributes.rel.value === 'tooltip') {
+                this.showTooltip(event, event.path[i]);
+              }
+            }
+          }
         }
-      }, false);
+      }, true);
       this.container.addEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
       this.container.addEventListener('mouseout', () => { this.hideTooltip(); }, false);
     }

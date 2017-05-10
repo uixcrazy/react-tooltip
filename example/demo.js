@@ -51,6 +51,27 @@ class Demo extends Component {
       <p>A link: <a href="http://www.simplehtmlguide.com"> html guide </a></p>`
     return (
       <div>
+      <h1>Muti level</h1>
+        <div className="have-tooltip" style={{ height: '300px' }}>
+          <div rel="tooltip" data-tip="<div><span>tooltip 001</span> <p>刹の名刹。1万株のあじさいと5千株の花菖蒲が有名で、別名「あじさい寺」とも呼ばれている。所々に</p> </div>">
+            <span>AFSDFASd Inc</span>
+            <div style={{ background: '#000', color: '#fff' }}>
+Das Leben ist wie Schokolade, <span>die man Stück für Stück genießen und sich langsam </span> auf der Zunge zergehen lassen soll
+Inicia sesión en Facebook para ver más de ?
+            </div>
+          </div>
+        </div>
+        <div className="have-tooltip">
+          <div rel="tooltip" data-tip="<div><span>tooltip 001</span> <p>刹の名刹。1万株のあじさいと5千株の花菖蒲が有名で、別名「あじさい寺」とも呼ばれている。所々に</p> </div>">
+            auf der Zunge zergehen lassen soll Inicia sesión en Facebook para ver más de ?,
+          </div>
+        </div>
+        <div className="have-tooltip" style={{ height: '200px' }}>
+          <div rel="tooltip" data-tip="<div><span>tooltip 001</span> <p>刹の名刹。1万株のあじさいと5千株の花菖蒲が有名で、別名「あじさい寺」とも呼ばれている。所々に</p> </div>">
+            Das Leben ist wie Schokolade,
+          </div>
+        </div>
+
         <h1>Follow MOuse - bottom default</h1>
         <div className="have-tooltip">
           <div className="box-grp demo-dynamic">
