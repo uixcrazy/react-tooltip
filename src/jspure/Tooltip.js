@@ -49,9 +49,6 @@ class Tooltip {
       this._container = container;
     }
 
-    // if (!!('ontouchstart' in window)) {
-    //   return;
-    // }
     if (this._container) {
       // Event Delegation
       // ------------------------------------------------------
@@ -96,13 +93,10 @@ class Tooltip {
   hideTooltip() { // event
     const { tooltipEl } = this._state;
     tooltipEl.classList.remove('show');
-    if (this._state.dataTip && this.afterHide && typeof this.afterHide === 'function') {
-      this.afterHide();
-    }
-
-    // this._container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
-    // this._container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
-    // this._container.removeEventListener('mouseleave', (event) => { this.hideTooltip(event); }, false);
+    Object.assign(this._state, { dataTip: null });
+    // if (this._state.dataTip && this.afterHide && typeof this.afterHide === 'function') {
+    //   this.afterHide();
+    // }
   }
 
   updateTooltip(event) {
@@ -171,11 +165,30 @@ class Tooltip {
     }
   }
 
+  changeClassName(oldName, newName) {
+    const {
+      tooltipEl,
+      tooltipContent,
+      tooltipArrowOutside,
+      tooltipArrowInside,
+    } = this._state;
+    // update className
+    tooltipEl.classList.remove(oldName);
+    tooltipEl.classList.add(newName);
+    tooltipContent.classList.remove(`${oldName}-content`);
+    tooltipContent.classList.add(`${newName}-content`);
+    tooltipArrowInside.classList.remove(`${oldName}-arrow-inside`);
+    tooltipArrowInside.classList.add(`${newName}-arrow-inside`);
+    tooltipArrowOutside.classList.remove(`${oldName}-arrow-outside`);
+    tooltipArrowOutside.classList.add(`${newName}-arrow-outside`);
+  }
+
   get className() {
     return this._className;
   }
 
   set className(className) {
+    this.changeClassName(this._className, className);
     this._className = className;
   }
 }
@@ -185,3 +198,11 @@ export default Tooltip;
 // Reference:
 //    https://www.w3schools.com/jsref/prop_node_nodetype.asp
 //    https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/typeof
+
+// if (!!('ontouchstart' in window)) {
+//   return;
+// }
+
+// this._container.removeEventListener('mouseenter', (event) => { this.showTooltip(event); }, false);
+// this._container.removeEventListener('mousemove', (event) => { this.updateTooltip(event); }, false);
+// this._container.removeEventListener('mouseleave', (event) => { this.hideTooltip(event); }, false);
