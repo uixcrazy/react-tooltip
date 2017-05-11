@@ -16,15 +16,17 @@
 */
 
 /*
- * Return: Function
+ * Function
  *----------------------------
- * changeClassName()
+ * set/get className  → change className
+ *
+ *
  * afterShow()  // this.afterShow
  * afterHide()
 */
 
 import getPosition from './GetPosition';
-import FindTooltip from './FindTooltip';
+import getTip from './GetTip';
 import '../tooltip.scss';
 
 class Tooltip {
@@ -56,7 +58,7 @@ class Tooltip {
       // this._container.addEventListener('mouseenter', (event) => { // only fire one time.
       this._container.addEventListener('mouseover', (event) => {
         const target = event.target;
-        const isShow = FindTooltip(target, this._container);
+        const isShow = getTip(target, this._container);
         if (isShow !== -1) this.showTooltip(event, isShow);
       });
 
@@ -167,6 +169,10 @@ class Tooltip {
       const tooltipContent = tooltipEl.querySelector(`.${this._className}-content`);
       Object.assign(this._state, { tooltipEl, tooltipArrowOutside, tooltipArrowInside, tooltipContent });
     }
+  }
+
+  get className() {
+    return this._className;
   }
 
   set className(className) {

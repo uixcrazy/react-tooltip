@@ -4,6 +4,7 @@
   "parser": "babel-eslint",
   "rules": {
     "indent": ["error", 2],
+    "allowAfterThis": true,
     "max-len": [2, 120, 2]
   },
   "env": {
