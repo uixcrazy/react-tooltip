@@ -19,11 +19,12 @@ localhost:9010/todolist
 
 
 ``` import Tooltip from '../src/jspure/Tooltip'; ```
+
 ```
 const Tooltip = new Tooltip({
-container: 'list-group', // className of container or Node
-document: document, // maybe document of iframe,
-className: 'tooltip', // help you figure out your style
+    container: 'list-group', // className of container or Node
+    document: document, // maybe document of iframe,
+    className: 'tooltip', // help you figure out your style
 });
 ```
 
@@ -32,6 +33,7 @@ className: 'tooltip', // help you figure out your style
 #### 2 . Add data-tip, data-place, data-offset to your element
 
 ```<p rel="tooltip" data-tip="hello world">Tooltip</p>```
+
 ```<p rel="tooltip" data-tip="hello world" data-place="bottom">Tooltip</p>```
 
 > *note: always have rel="tooltip"
