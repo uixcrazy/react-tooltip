@@ -37,4 +37,5 @@ const Tooltip = new Tooltip({
 ```<p rel="tooltip" data-tip="hello world" data-place="bottom">Tooltip</p>```
 
 > *note: always have rel="tooltip"
+
 > data-tip is mandatory
