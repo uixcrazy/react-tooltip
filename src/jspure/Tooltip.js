@@ -2,17 +2,17 @@
  * data-param when init tooltip
  *----------------------------
  * Object ↓↓↓
- * container: body || className || HTML element -------- at container, not use Flexbox CSS
- * document: document or document of iframe
- * className: allow you change ClassName of Tooltip
+ * [option] -- container: body || className || HTML element -------- at container, not use Flexbox CSS
+ * [option] -- document: document or document of iframe
+ * [option] -- className: allow you change ClassName of Tooltip
 */
 
 /*
- * data-param for tooltipItem
+ * data-param at tooltipItem
  *----------------------------
- * data-tip="content tooltip"
- * data-place="top"
- * data-offset="10"
+ * [mandatory] -- data-tip="content tooltip"
+ * [option] -- data-place="top"
+ * [option] -- data-offset="10"
 */
 
 /*
