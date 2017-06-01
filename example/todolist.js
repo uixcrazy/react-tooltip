@@ -2,7 +2,6 @@
 import React from 'react';  // eslint-disable-line
 import { render } from 'react-dom'; // eslint-disable-line
 import List from './todolist/index'; // eslint-disable-line
-import Ttt from '../src/jspure/Tooltip';
 
 const todoItems = [
   { text: 'redux', done: false },
@@ -18,18 +17,6 @@ const todoItems = [
 //   tooltip={{ dataTooltip: 'daile' }}
 //   initItems={todoItems} />
 
-
-setTimeout(() => {
-  new Ttt({
-    container: 'list-group',
-    // ttAfterShow: function() {
-    //   console.log('ttAfterShow');
-    // },
-    // ttAfterHide: function() {
-    //   console.log('ttAfterHide');
-    // },
-  });
-}, 1000);
 render(
   <div>
     <List initItems={todoItems}/>

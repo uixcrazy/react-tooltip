@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './todolist.scss';
+import Ttt from '../../src/jspure/Tooltip';
 
 class Item extends Component {
   constructor(props) {
@@ -35,6 +36,23 @@ class List extends Component {
     this.state = ({
       inputValue: '',
     });
+  }
+
+  componentDidMount() {
+    const tooltip = new Ttt({
+      container: 'list-group',
+      // ttAfterShow: function() {
+      //   console.log('ttAfterShow');
+      // },
+      // ttAfterHide: function() {
+      //   console.log('ttAfterHide');
+      // },
+    });
+    this.setState(
+      {
+        tooltip
+      }
+    );
   }
 
   componentDidUpdate() {
