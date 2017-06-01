@@ -42,7 +42,7 @@ class Demo extends Component {
     Array.prototype.forEach.call(containerList, function (node) {
       console.log(node);
       const T = new Tooltip({ container: node });
-      console.log(T);
+      // console.log(T);
       // Your code here.
     });
   }

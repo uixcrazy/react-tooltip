@@ -3,8 +3,8 @@
  *
  * @params
  * - `event` {Event} the event of current mouse
- * - `tooltipEl` {DOM}
  * - `container` {DOM} Keeps the tooltip within the bounds of this element.
+ * - `tooltipEl` {DOM}
  * - `place` {String} top / right / bottom / left
  * - `offset` {Number} the offset to default position
  *
@@ -29,15 +29,28 @@ export default function (event, container, tooltipEl, place, offset) {
   const mouseY = event.clientY;
 
   const boundingClientRectContainer = container.getBoundingClientRect(); // for browser's window
-  const topContainerEl = boundingClientRectContainer.top;  // border + padding
-  const leftContainerEl = boundingClientRectContainer.left;
+
+  let topContainerEl = boundingClientRectContainer.top;  // border + padding
+  if (topContainerEl < 0) topContainerEl = 0;
+  let leftContainerEl = boundingClientRectContainer.left;
+  if (leftContainerEl < 0) leftContainerEl = 0;
+
   const widthContainerEl = container.offsetWidth; // border
   const heightContainerEl = container.offsetHeight;
+
   const xCursorExtra = boundingClientRectContainer.left + borderLeftWidth;
   const yCursorExtra = boundingClientRectContainer.top + borderTopWidth;
 
-  const maxLeftContainer = widthContainerEl + leftContainerEl; // ←-- rightContainerEl
-  const bottomContainerEl = topContainerEl + heightContainerEl;
+  const widthDocumentNoIframe = document.documentElement.clientWidth;
+  const heightDocumentNoIframe = document.documentElement.clientHeight;
+  let maxLeftContainer = widthContainerEl + leftContainerEl; // ←-- rightContainerEl
+  if (maxLeftContainer > widthDocumentNoIframe) {
+    maxLeftContainer = widthDocumentNoIframe;
+  }
+  let bottomContainerEl = topContainerEl + heightContainerEl;
+  if (bottomContainerEl > heightDocumentNoIframe) {
+    bottomContainerEl = heightDocumentNoIframe;
+  }
 
   // ↓↓↓ top && bottom ↓↓↓
   if ((place === 'top') || (place === 'bottom')) {
